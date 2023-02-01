@@ -1,68 +1,68 @@
-import "../assets/App.css";
+import '../assets/App.css'
 import {
   Box,
   chakra,
+  ScaleFade,
   SimpleGrid,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-} from "@chakra-ui/react";
-import AvailableLotsStats from "../components/AvailableLotsStats";
-import { fetchCarParkAvailability } from "../api/carParkAvailabilityAPI";
-import { useEffect, useState } from "react";
+  useDisclosure,
+} from '@chakra-ui/react'
+import AvailableLotsStats from '../components/AvailableLotsStats'
+import { fetchCarParkAvailability } from '../api/carParkAvailabilityAPI'
+import { useEffect, useState } from 'react'
 
 function App() {
-  const [carParkAvailability, setCarParkAvailability] = useState({});
+  const [carParkAvailability, setCarParkAvailability] = useState({})
+
   useEffect(() => {
     fetchCarParkAvailability().then((res) => {
-      setCarParkAvailability(res);
-      console.log(res);
-    });
-  });
+      setCarParkAvailability(res)
+    })
+
+    const interval = setInterval(() => {
+      console.log('This will run every second!')
+      fetchCarParkAvailability().then((res) => {
+        setCarParkAvailability(res)
+      })
+    }, 60000)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
-    <div className="App">
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
-      <chakra.h1
-        textAlign={"center"}
-        fontSize={"4xl"}
-        py={10}
-        fontWeight={"bold"}
-      >
+    <div className='App'>
+      <chakra.h1 textAlign={'center'} fontSize={'4xl'} py={10} fontWeight={'bold'}>
         Live Car Park Availability
       </chakra.h1>
 
-      <Tabs isFitted variant="enclosed">
-        <TabList mb="1em">
+      <Tabs variant='soft-rounded' align='center' size='lg'>
+        <TabList mb='1em'>
           {Object.keys(carParkAvailability).map((category) => (
-            <Tab>{category}</Tab>
+            <Tab key={category}>{category}</Tab>
           ))}
         </TabList>
         <TabPanels>
-          {Object.keys(carParkAvailability).map((category) => (
-            <TabPanel>
+          {Object.keys(carParkAvailability).map((category, catIndex) => (
+            <TabPanel key={category + '-' + catIndex}>
               <Box paddingX={20}>
                 <SimpleGrid columns={2} spacing={20}>
-                  <AvailableLotsStats
-                    type={"lowest"}
-                    availableLots={2}
-                    carParkNumbers={["JE", "JJW"]}
-                  />
+                  {Object.keys(carParkAvailability[category as keyof object]).map(
+                    (type, typeIndex) => (
+                      <AvailableLotsStats
+                        key={type + '-' + typeIndex}
+                        type={type}
+                        availableLots={
+                          carParkAvailability[category as keyof object][type]['availableLots']
+                        }
+                        carParkNumbers={
+                          carParkAvailability[category as keyof object][type]['carParkNumbers']
+                        }
+                      />
+                    ),
+                  )}
                 </SimpleGrid>
               </Box>
             </TabPanel>
@@ -70,7 +70,7 @@ function App() {
         </TabPanels>
       </Tabs>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

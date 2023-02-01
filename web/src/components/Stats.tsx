@@ -1,4 +1,4 @@
-import { Stat, StatLabel, StatNumber } from "@chakra-ui/react";
+import { Stat, StatLabel, StatNumber } from '@chakra-ui/react';
 
 interface StatsProps {
   label: string;
