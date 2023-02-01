@@ -1,16 +1,16 @@
 import { ICarPark } from "../interfaces/ICarPark";
-import { CarParkCategory } from "../enums/CarParkCategory";
+import { CarParkCategoryEnum } from "../enums/CarParkCategoryEnum";
 
 export class CarPark implements ICarPark {
   totalLots: number;
   availableLots: number;
-  carParkCategory: CarParkCategory;
+  carParkCategory: CarParkCategoryEnum;
   carParkNumber: string;
 
   constructor(
     totalLots: number,
     availableLots: number,
-    carParkCategory: CarParkCategory,
+    carParkCategory: CarParkCategoryEnum,
     carParkNumber: string
   ) {
     this.totalLots = totalLots;

@@ -1,15 +1,15 @@
 import { IOutputter } from "./IOutputter";
-import { CarParkCategory } from "../enums/CarParkCategory";
+import { CarParkCategoryEnum } from "../enums/CarParkCategoryEnum";
 
 interface ICarPark extends IOutputter {
   totalLots: number;
   availableLots: number;
-  carParkCategory: CarParkCategory;
+  carParkCategory: CarParkCategoryEnum;
   carParkNumber: string;
 
   getTotalLots: () => number;
   getAvailableLots: () => number;
-  getCarParkCategory: () => CarParkCategory;
+  getCarParkCategory: () => CarParkCategoryEnum;
   getCarParkNumber: () => string;
 }
 
