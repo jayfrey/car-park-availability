@@ -8,7 +8,7 @@ services:
       - ./api:/app
       - /app/node_modules
     ports:
-      - 3000:3000
+      - 3030:3030
     command: ["yarn", "start:dev"]
     networks:
       - car_park_availability

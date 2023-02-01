@@ -14,4 +14,4 @@ RUN yarn install
 COPY . .
 # RUN yarn build
 # Expose port
-EXPOSE 3000
+EXPOSE 3030

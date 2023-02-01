@@ -12,10 +12,14 @@ type CategorisedCarParkAvailability = {
 };
 
 type CarParkNumberAvailability = {
-  lowestAvailable: number;
-  highestAvailable: number;
-  lowestCarParkNumbers: string[];
-  highestCarParkNumbers: string[];
+  lowest: {
+    availableLots: number;
+    carParkNumbers: string[];
+  };
+  highest: {
+    availableLots: number;
+    carParkNumbers: string[];
+  };
 };
 
 export class AppService {
@@ -70,35 +74,29 @@ export class AppService {
         categorisedCarParks[carParkCategory]
       );
 
-      const lowestAvailable: number =
+      const lowestAvailableLots: number =
         categorisedCarParks[carParkCategory][0].getAvailableLots();
-      const highestAvailable: number =
+      const highestAvailableLots: number =
         categorisedCarParks[carParkCategory][
           categorisedCarParks[carParkCategory].length - 1
         ].getAvailableLots();
 
-      console.log("lowestAvailable", lowestAvailable);
-      console.log("highestAvailable", highestAvailable);
+      console.log("lowestAvailableLots", lowestAvailableLots);
+      console.log("highestAvailableLots", highestAvailableLots);
 
       // Group car park number by lowest and highest available lots
       const carParkNumbers: Record<string, string[]> = categorisedCarParks[
         carParkCategory
       ].reduce<Record<string, string[]>>(
         (carParkNumbers: Record<string, string[]>, carPark: ICarPark) => {
-          if (lowestAvailable == carPark.getAvailableLots()) {
-            carParkNumbers["lowestCarParkNumbers"] =
-              carParkNumbers["lowestCarParkNumbers"] || [];
-            carParkNumbers["lowestCarParkNumbers"].push(
-              carPark.getCarParkNumber()
-            );
+          if (lowestAvailableLots == carPark.getAvailableLots()) {
+            carParkNumbers["lowest"] = carParkNumbers["lowest"] || [];
+            carParkNumbers["lowest"].push(carPark.getCarParkNumber());
           }
 
-          if (highestAvailable == carPark.getAvailableLots()) {
-            carParkNumbers["highestCarParkNumbers"] =
-              carParkNumbers["highestCarParkNumbers"] || [];
-            carParkNumbers["highestCarParkNumbers"].push(
-              carPark.getCarParkNumber()
-            );
+          if (highestAvailableLots == carPark.getAvailableLots()) {
+            carParkNumbers["highest"] = carParkNumbers["highest"] || [];
+            carParkNumbers["highest"].push(carPark.getCarParkNumber());
           }
           return carParkNumbers;
         },
@@ -107,10 +105,14 @@ export class AppService {
 
       categorisedCarParkAvailability[getCarParkCategoryName(carParkCategory)] =
         {
-          lowestAvailable,
-          highestAvailable,
-          lowestCarParkNumbers: carParkNumbers["lowestCarParkNumbers"],
-          highestCarParkNumbers: carParkNumbers["highestCarParkNumbers"],
+          lowest: {
+            availableLots: lowestAvailableLots,
+            carParkNumbers: carParkNumbers["lowest"],
+          },
+          highest: {
+            availableLots: highestAvailableLots,
+            carParkNumbers: carParkNumbers["highest"],
+          },
         };
     });
 
