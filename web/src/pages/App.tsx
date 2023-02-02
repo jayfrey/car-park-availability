@@ -1,72 +1,85 @@
 import '../assets/App.css'
-import {
-  Box,
-  chakra,
-  ScaleFade,
-  SimpleGrid,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  useDisclosure,
-} from '@chakra-ui/react'
-import AvailableLotsStats from '../components/AvailableLotsStats'
+import { Heading, Tab, TabList, TabPanel, TabPanels, Tabs, Tooltip } from '@chakra-ui/react'
 import { fetchCarParkAvailability } from '../api/carParkAvailabilityAPI'
 import { useEffect, useState } from 'react'
+import TabPanelContent from '../components/TabPanelContent'
 
 function App() {
-  const [carParkAvailability, setCarParkAvailability] = useState({})
+  const refreshInterval = 60000
+  const emptyCarParkAvailabilityObject = {
+    lowest: {
+      availableLots: 0,
+      carParkNumbers: [],
+    },
+    highest: {
+      availableLots: 0,
+      carParkNumbers: [],
+    },
+  }
+  const [carParkAvailability, setCarParkAvailability] = useState({
+    small: emptyCarParkAvailabilityObject,
+    medium: emptyCarParkAvailabilityObject,
+    big: emptyCarParkAvailabilityObject,
+    large: emptyCarParkAvailabilityObject,
+  })
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     fetchCarParkAvailability().then((res) => {
       setCarParkAvailability(res)
+      setIsLoaded(true)
     })
 
     const interval = setInterval(() => {
-      console.log('This will run every second!')
       fetchCarParkAvailability().then((res) => {
         setCarParkAvailability(res)
       })
-    }, 60000)
+    }, refreshInterval)
     return () => clearInterval(interval)
   }, [])
 
   return (
     <div className='App'>
-      <chakra.h1 textAlign={'center'} fontSize={'4xl'} py={10} fontWeight={'bold'}>
-        Live Car Park Availability
-      </chakra.h1>
+      <Heading as='h2' size='xl' noOfLines={1} paddingY={'10'}>
+        Live Singapore Car Park Availability
+      </Heading>
 
-      <Tabs variant='soft-rounded' align='center' size='lg'>
-        <TabList mb='1em'>
-          {Object.keys(carParkAvailability).map((category) => (
-            <Tab key={category}>{category}</Tab>
-          ))}
+      <Tabs variant={'soft-rounded'} align={'center'} size={'lg'}>
+        <TabList mb={'1em'}>
+          <Tooltip label={'Less than 100 lots'} placement={'top'}>
+            <Tab key={'tab-small'} isDisabled={!isLoaded}>
+              Small
+            </Tab>
+          </Tooltip>
+          <Tooltip label={'Between 100 and 299 lots'} placement={'top'}>
+            <Tab key={'tab-medium'} isDisabled={!isLoaded}>
+              Medium
+            </Tab>
+          </Tooltip>
+          <Tooltip label={'Between 300 and 399 lots'} placement={'top'}>
+            <Tab key={'tab-big'} isDisabled={!isLoaded}>
+              Big
+            </Tab>
+          </Tooltip>
+          <Tooltip label={'More than 400 lots'} placement={'top'}>
+            <Tab key={'tab-large'} isDisabled={!isLoaded}>
+              Large
+            </Tab>
+          </Tooltip>
         </TabList>
         <TabPanels>
-          {Object.keys(carParkAvailability).map((category, catIndex) => (
-            <TabPanel key={category + '-' + catIndex}>
-              <Box paddingX={20}>
-                <SimpleGrid columns={2} spacing={20}>
-                  {Object.keys(carParkAvailability[category as keyof object]).map(
-                    (type, typeIndex) => (
-                      <AvailableLotsStats
-                        key={type + '-' + typeIndex}
-                        type={type}
-                        availableLots={
-                          carParkAvailability[category as keyof object][type]['availableLots']
-                        }
-                        carParkNumbers={
-                          carParkAvailability[category as keyof object][type]['carParkNumbers']
-                        }
-                      />
-                    ),
-                  )}
-                </SimpleGrid>
-              </Box>
-            </TabPanel>
-          ))}
+          <TabPanel key={'tap-panel-small'}>
+            <TabPanelContent isLoaded={isLoaded} data={carParkAvailability['small']} />
+          </TabPanel>
+          <TabPanel key={'tap-panel-medium'}>
+            <TabPanelContent isLoaded={isLoaded} data={carParkAvailability['medium']} />
+          </TabPanel>
+          <TabPanel key={'tap-panel-large'}>
+            <TabPanelContent isLoaded={isLoaded} data={carParkAvailability['big']} />
+          </TabPanel>
+          <TabPanel key={'tap-panel-big'}>
+            <TabPanelContent isLoaded={isLoaded} data={carParkAvailability['large']} />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </div>

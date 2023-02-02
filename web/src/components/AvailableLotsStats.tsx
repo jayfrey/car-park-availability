@@ -1,35 +1,60 @@
-import { Box, VStack, Tag, TagLabel, Wrap } from '@chakra-ui/react'
-import Stats from './Stats'
+import {
+  Tag,
+  TagLabel,
+  Wrap,
+  Skeleton,
+  StatLabel,
+  StatNumber,
+  Stat,
+  Card,
+  CardBody,
+  CardHeader,
+  Container,
+  Badge,
+  Flex,
+  Tooltip,
+} from '@chakra-ui/react'
 
 interface AvailableLotsStatsProps {
+  isLoaded: boolean
   type: string
   availableLots: number
   carParkNumbers: string[]
 }
 
 export default function AvailableLotsStats(props: AvailableLotsStatsProps) {
-  const { type, availableLots, carParkNumbers } = props
+  const { isLoaded, type, availableLots, carParkNumbers } = props
   return (
-    <VStack spacing={10} align='stretch'>
-      <Stats
-        label={type === 'lowest' ? 'Lowest Available Lots' : 'Highest Available Lots'}
-        stats={availableLots}
-      />
+    <Card>
+      <CardHeader>
+        <Flex justifyContent='end'>
+          <Tooltip label={'Number of car parks'} placement={'left'}>
+            <Badge size={'10px'} fontSize='15px'>
+              {carParkNumbers.length}
+            </Badge>
+          </Tooltip>
+        </Flex>
+        <Stat>
+          <StatLabel fontSize='20px'>
+            {type === 'lowest' ? 'Lowest Available Lots' : 'Highest Available Lots'}
+          </StatLabel>
+          <StatNumber>{availableLots}</StatNumber>
+        </Stat>
+      </CardHeader>
 
-      <Box bg={'tomato'} borderRadius={'lg'} minHeight={'55vh'} maxHeight={'55vh'} padding={5}>
-        <Wrap>
-          {carParkNumbers.map((carParkNumber, carParkNumberIndex) => (
-            <Tag
-              size={'lg'}
-              key={carParkNumber + '-' + carParkNumberIndex}
-              variant='subtle'
-              colorScheme='cyan'
-            >
-              <TagLabel>{carParkNumber}</TagLabel>
-            </Tag>
-          ))}
-        </Wrap>
-      </Box>
-    </VStack>
+      <CardBody>
+        <Skeleton isLoaded={isLoaded}>
+          <Container borderRadius={'lg'} minHeight={'50vh'} maxHeight={'50vh'} overflowY={'scroll'}>
+            <Wrap>
+              {carParkNumbers.map((carParkNumber, index) => (
+                <Tag size={'lg'} key={'wrap-' + index} variant={'subtle'} colorScheme={'cyan'}>
+                  <TagLabel>{carParkNumber}</TagLabel>
+                </Tag>
+              ))}
+            </Wrap>
+          </Container>
+        </Skeleton>
+      </CardBody>
+    </Card>
   )
 }
