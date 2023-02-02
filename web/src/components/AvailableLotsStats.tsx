@@ -13,6 +13,7 @@ import {
   Badge,
   Flex,
   Tooltip,
+  Stack,
 } from '@chakra-ui/react'
 
 interface AvailableLotsStatsProps {
@@ -29,7 +30,7 @@ export default function AvailableLotsStats(props: AvailableLotsStatsProps) {
       <CardHeader>
         <Flex justifyContent='end'>
           <Tooltip label={'Number of car parks'} placement={'left'}>
-            <Badge size={'10px'} fontSize='15px'>
+            <Badge size={'10px'} fontSize='15px' colorScheme='red'>
               {carParkNumbers.length}
             </Badge>
           </Tooltip>

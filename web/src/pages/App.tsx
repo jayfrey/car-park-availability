@@ -1,10 +1,11 @@
 import '../assets/App.css'
-import { Heading, Tab, TabList, TabPanel, TabPanels, Tabs, Tooltip } from '@chakra-ui/react'
+import { Tab, TabList, TabPanel, TabPanels, Tabs, Tooltip } from '@chakra-ui/react'
 import { fetchCarParkAvailability } from '../api/carParkAvailabilityAPI'
 import { useEffect, useState } from 'react'
 import TabPanelContent from '../components/TabPanelContent'
+import Header from '../layouts/Header'
 
-function App() {
+export default function App() {
   const refreshInterval = 60000
   const emptyCarParkAvailabilityObject = {
     lowest: {
@@ -39,12 +40,10 @@ function App() {
   }, [])
 
   return (
-    <div className='App'>
-      <Heading as='h2' size='xl' noOfLines={1} paddingY={'10'}>
-        Live Singapore Car Park Availability
-      </Heading>
+    <>
+      <Header />
 
-      <Tabs variant={'soft-rounded'} align={'center'} size={'lg'}>
+      <Tabs variant={'soft-rounded'} align={'center'} size={'lg'} colorScheme={'cyan'}>
         <TabList mb={'1em'}>
           <Tooltip label={'Less than 100 lots'} placement={'top'}>
             <Tab key={'tab-small'} isDisabled={!isLoaded}>
@@ -82,8 +81,6 @@ function App() {
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </div>
+    </>
   )
 }
-
-export default App
