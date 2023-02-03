@@ -1,5 +1,5 @@
 # Carpark Availability
-A simple website that displays the lowest and highest carpark available lots along with the carpark numbers in Singapore. The content is sourced from https://data.gov.sg/dataset/carpark-availability and the app itself will auto-refresh the content every 60 seconds. 
+A simple website that displays the lowest and highest carpark available lots along with the carpark numbers in Singapore. The data is sourced from https://data.gov.sg/dataset/carpark-availability and the app itself will auto-refresh the content every 60 seconds. 
 
 ### Prerequisite
 * Docker (20.10.17)
