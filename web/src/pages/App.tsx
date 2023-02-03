@@ -1,39 +1,39 @@
 import '../assets/App.css'
 import { Tab, TabList, TabPanel, TabPanels, Tabs, Tooltip } from '@chakra-ui/react'
-import { fetchCarParkAvailability } from '../api/carParkAvailabilityAPI'
+import { fetchCarparkAvailability } from '../api/carparkAvailabilityAPI'
 import { useEffect, useState } from 'react'
 import TabPanelContent from '../components/TabPanelContent'
 import Header from '../layouts/Header'
 
 export default function App() {
   const refreshInterval = 60000
-  const emptyCarParkAvailabilityObject = {
+  const emptyAvailableLotsObject = {
     lowest: {
       availableLots: 0,
-      carParkNumbers: [],
+      carparkNumbers: [],
     },
     highest: {
       availableLots: 0,
-      carParkNumbers: [],
+      carparkNumbers: [],
     },
   }
-  const [carParkAvailability, setCarParkAvailability] = useState({
-    small: emptyCarParkAvailabilityObject,
-    medium: emptyCarParkAvailabilityObject,
-    big: emptyCarParkAvailabilityObject,
-    large: emptyCarParkAvailabilityObject,
+  const [carparkAvailability, setCarparkAvailability] = useState({
+    small: emptyAvailableLotsObject,
+    medium: emptyAvailableLotsObject,
+    big: emptyAvailableLotsObject,
+    large: emptyAvailableLotsObject,
   })
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
-    fetchCarParkAvailability().then((res) => {
-      setCarParkAvailability(res)
+    fetchCarparkAvailability().then((res) => {
+      setCarparkAvailability(res)
       setIsLoaded(true)
     })
 
     const interval = setInterval(() => {
-      fetchCarParkAvailability().then((res) => {
-        setCarParkAvailability(res)
+      fetchCarparkAvailability().then((res) => {
+        setCarparkAvailability(res)
       })
     }, refreshInterval)
     return () => clearInterval(interval)
@@ -68,16 +68,16 @@ export default function App() {
         </TabList>
         <TabPanels>
           <TabPanel key={'tap-panel-small'}>
-            <TabPanelContent isLoaded={isLoaded} data={carParkAvailability['small']} />
+            <TabPanelContent isLoaded={isLoaded} data={carparkAvailability['small']} />
           </TabPanel>
           <TabPanel key={'tap-panel-medium'}>
-            <TabPanelContent isLoaded={isLoaded} data={carParkAvailability['medium']} />
+            <TabPanelContent isLoaded={isLoaded} data={carparkAvailability['medium']} />
           </TabPanel>
           <TabPanel key={'tap-panel-large'}>
-            <TabPanelContent isLoaded={isLoaded} data={carParkAvailability['big']} />
+            <TabPanelContent isLoaded={isLoaded} data={carparkAvailability['big']} />
           </TabPanel>
           <TabPanel key={'tap-panel-big'}>
-            <TabPanelContent isLoaded={isLoaded} data={carParkAvailability['large']} />
+            <TabPanelContent isLoaded={isLoaded} data={carparkAvailability['large']} />
           </TabPanel>
         </TabPanels>
       </Tabs>

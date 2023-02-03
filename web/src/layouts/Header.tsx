@@ -8,7 +8,7 @@ export default function Header() {
       <Spacer />
       <HStack align={'center'} justify={'center'} spacing={5}>
         <Heading as='h2' size='xl' noOfLines={1} paddingY={10}>
-          Live Singapore Car Park Availability
+          Singapore Carpark Availability
         </Heading>
       </HStack>
       <Spacer />
