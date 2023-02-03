@@ -11,7 +11,7 @@ services:
       - 3030:3030
     command: ["yarn", "start:dev"]
     networks:
-      - car_park_availability
+      - carpark_availability
     healthcheck:
       test: ["CMD", "node", "healthcheck.js"]
       interval: 10s
@@ -24,16 +24,12 @@ services:
     volumes:
       - ./web/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
-      - car_park_availability
+      - carpark_availability
     ports:
       - 80:80
     depends_on:
       api:
         condition: service_healthy
 
-# volumes:
-#   mongo_data:
-#   postgres_data:
-
 networks:
-  car_park_availability:
+  carpark_availability:
