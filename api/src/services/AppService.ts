@@ -1,62 +1,62 @@
-import { ICarPark } from "../interfaces/ICarPark";
+import { ICarpark } from "../interfaces/ICarpark";
 import {
-  CarParkCategoryEnum,
-  getCarParkCategoryName,
-} from "../enums/CarParkCategoryEnum";
+  CarparkCategoryEnum,
+  getCarparkCategoryName,
+} from "../enums/CarparkCategoryEnum";
 
-type CategorisedCarParkAvailability = {
-  small: CarParkNumberAvailability | null;
-  medium: CarParkNumberAvailability | null;
-  big: CarParkNumberAvailability | null;
-  large: CarParkNumberAvailability | null;
+type CategorisedCarparkAvailability = {
+  small: CarparkNumberAvailability | null;
+  medium: CarparkNumberAvailability | null;
+  big: CarparkNumberAvailability | null;
+  large: CarparkNumberAvailability | null;
 };
 
-type CarParkNumberAvailability = {
+type CarparkNumberAvailability = {
   lowest: {
     availableLots: number;
-    carParkNumbers: string[];
+    carparkNumbers: string[];
   };
   highest: {
     availableLots: number;
-    carParkNumbers: string[];
+    carparkNumbers: string[];
   };
 };
 
 export class AppService {
-  carParks: ICarPark[];
+  carparks: ICarpark[];
 
-  constructor(carParks: ICarPark[]) {
-    this.carParks = carParks;
+  constructor(carparks: ICarpark[]) {
+    this.carparks = carparks;
   }
 
   groupCarParksByCategory() {
-    return this.carParks.reduce<Record<CarParkCategoryEnum, ICarPark[]>>(
+    return this.carparks.reduce<Record<CarparkCategoryEnum, ICarpark[]>>(
       (
-        categorisedCarParks: Record<CarParkCategoryEnum, ICarPark[]>,
-        carPark: ICarPark
+        categorisedCarparks: Record<CarparkCategoryEnum, ICarpark[]>,
+        carPark: ICarpark
       ) => {
-        let carParkCategory = carPark.getCarParkCategory();
-        categorisedCarParks[carParkCategory] =
-          categorisedCarParks[carParkCategory] || [];
-        categorisedCarParks[carParkCategory].push(carPark);
-        return categorisedCarParks;
+        let carparkCategory = carPark.getCarparkCategory();
+        categorisedCarparks[carparkCategory] =
+          categorisedCarparks[carparkCategory] || [];
+        categorisedCarparks[carparkCategory].push(carPark);
+        return categorisedCarparks;
       },
       Object.create(null)
     );
   }
 
-  sortCarParksByAvailableLots(carPark: ICarPark[]) {
-    return carPark.sort((a: ICarPark, b: ICarPark) => {
-      return a.getAvailableLots() - b.getAvailableLots();
+  sortCarparksByAvailableLots(carparks: ICarpark[]) {
+    return carparks.sort((carparkA: ICarpark, carparkB: ICarpark) => {
+      return carparkA.getAvailableLots() - carparkB.getAvailableLots();
     });
   }
 
-  getCarParkNumbersByLowestAndHighestAvailableLots() {
+  getCarparkNumbersByLowestAndHighestAvailableLots() {
     // Group car park by category
-    let categorisedCarParks: Record<CarParkCategoryEnum, ICarPark[]> =
+    let categorisedCarparks: Record<CarparkCategoryEnum, ICarpark[]> =
       this.groupCarParksByCategory();
 
-    let categorisedCarParkAvailability: CategorisedCarParkAvailability = {
+    let categorisedCarparkAvailability: CategorisedCarparkAvailability = {
       small: Object.create(null),
       medium: Object.create(null),
       big: Object.create(null),
@@ -64,58 +64,58 @@ export class AppService {
     };
 
     [
-      CarParkCategoryEnum.SMALL,
-      CarParkCategoryEnum.MEDIUM,
-      CarParkCategoryEnum.BIG,
-      CarParkCategoryEnum.LARGE,
-    ].forEach((carParkCategory: CarParkCategoryEnum) => {
+      CarparkCategoryEnum.SMALL,
+      CarparkCategoryEnum.MEDIUM,
+      CarparkCategoryEnum.BIG,
+      CarparkCategoryEnum.LARGE,
+    ].forEach((carparkCategory: CarparkCategoryEnum) => {
       // Sort by lots available ascendingly
-      categorisedCarParks[carParkCategory] = this.sortCarParksByAvailableLots(
-        categorisedCarParks[carParkCategory]
+      categorisedCarparks[carparkCategory] = this.sortCarparksByAvailableLots(
+        categorisedCarparks[carparkCategory]
       );
 
       const lowestAvailableLots: number =
-        categorisedCarParks[carParkCategory][0].getAvailableLots();
+        categorisedCarparks[carparkCategory][0].getAvailableLots();
       const highestAvailableLots: number =
-        categorisedCarParks[carParkCategory][
-          categorisedCarParks[carParkCategory].length - 1
+        categorisedCarparks[carparkCategory][
+          categorisedCarparks[carparkCategory].length - 1
         ].getAvailableLots();
 
       console.log("lowestAvailableLots", lowestAvailableLots);
       console.log("highestAvailableLots", highestAvailableLots);
 
       // Group car park number by lowest and highest available lots
-      const carParkNumbers: Record<string, string[]> = categorisedCarParks[
-        carParkCategory
+      const carparkNumbers: Record<string, string[]> = categorisedCarparks[
+        carparkCategory
       ].reduce<Record<string, string[]>>(
-        (carParkNumbers: Record<string, string[]>, carPark: ICarPark) => {
+        (carparkNumbers: Record<string, string[]>, carPark: ICarpark) => {
           if (lowestAvailableLots == carPark.getAvailableLots()) {
-            carParkNumbers["lowest"] = carParkNumbers["lowest"] || [];
-            carParkNumbers["lowest"].push(carPark.getCarParkNumber());
+            carparkNumbers["lowest"] = carparkNumbers["lowest"] || [];
+            carparkNumbers["lowest"].push(carPark.getCarparkNumber());
           }
 
           if (highestAvailableLots == carPark.getAvailableLots()) {
-            carParkNumbers["highest"] = carParkNumbers["highest"] || [];
-            carParkNumbers["highest"].push(carPark.getCarParkNumber());
+            carparkNumbers["highest"] = carparkNumbers["highest"] || [];
+            carparkNumbers["highest"].push(carPark.getCarparkNumber());
           }
-          return carParkNumbers;
+          return carparkNumbers;
         },
         Object.create(null)
       );
 
-      categorisedCarParkAvailability[getCarParkCategoryName(carParkCategory)] =
+      categorisedCarparkAvailability[getCarparkCategoryName(carparkCategory)] =
         {
           lowest: {
             availableLots: lowestAvailableLots,
-            carParkNumbers: carParkNumbers["lowest"],
+            carparkNumbers: carparkNumbers["lowest"],
           },
           highest: {
             availableLots: highestAvailableLots,
-            carParkNumbers: carParkNumbers["highest"],
+            carparkNumbers: carparkNumbers["highest"],
           },
         };
     });
 
-    return categorisedCarParkAvailability;
+    return categorisedCarparkAvailability;
   }
 }

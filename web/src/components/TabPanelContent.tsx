@@ -6,11 +6,11 @@ interface TabPanelContentProps {
   data: {
     lowest: {
       availableLots: number
-      carParkNumbers: string[]
+      carparkNumbers: string[]
     }
     highest: {
       availableLots: number
-      carParkNumbers: string[]
+      carparkNumbers: string[]
     }
   }
 }
@@ -25,14 +25,14 @@ export default function TabPanelContent(props: TabPanelContentProps) {
           type={'lowest'}
           isLoaded={isLoaded}
           availableLots={data['lowest']['availableLots']}
-          carParkNumbers={data['lowest']['carParkNumbers']}
+          carparkNumbers={data['lowest']['carparkNumbers']}
         />
         <AvailableLotsStats
           key={'highest-available-lots-stats'}
           type={'highest'}
           isLoaded={isLoaded}
           availableLots={data['highest']['availableLots']}
-          carParkNumbers={data['highest']['carParkNumbers']}
+          carparkNumbers={data['highest']['carparkNumbers']}
         />
       </SimpleGrid>
     </Box>

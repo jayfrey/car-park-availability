@@ -13,25 +13,24 @@ import {
   Badge,
   Flex,
   Tooltip,
-  Stack,
 } from '@chakra-ui/react'
 
 interface AvailableLotsStatsProps {
   isLoaded: boolean
   type: string
   availableLots: number
-  carParkNumbers: string[]
+  carparkNumbers: string[]
 }
 
 export default function AvailableLotsStats(props: AvailableLotsStatsProps) {
-  const { isLoaded, type, availableLots, carParkNumbers } = props
+  const { isLoaded, type, availableLots, carparkNumbers } = props
   return (
     <Card>
       <CardHeader>
         <Flex justifyContent='end'>
           <Tooltip label={'Number of car parks'} placement={'left'}>
             <Badge size={'10px'} fontSize='15px' colorScheme='red'>
-              {carParkNumbers.length}
+              {carparkNumbers.length}
             </Badge>
           </Tooltip>
         </Flex>
@@ -47,9 +46,9 @@ export default function AvailableLotsStats(props: AvailableLotsStatsProps) {
         <Skeleton isLoaded={isLoaded}>
           <Container borderRadius={'lg'} minHeight={'50vh'} maxHeight={'50vh'} overflowY={'scroll'}>
             <Wrap>
-              {carParkNumbers.map((carParkNumber, index) => (
+              {carparkNumbers.map((carparkNumber, index) => (
                 <Tag size={'lg'} key={'wrap-' + index} variant={'subtle'} colorScheme={'cyan'}>
-                  <TagLabel>{carParkNumber}</TagLabel>
+                  <TagLabel>{carparkNumber}</TagLabel>
                 </Tag>
               ))}
             </Wrap>
