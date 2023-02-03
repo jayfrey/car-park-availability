@@ -1,8 +1,8 @@
 {
-  "name": "car-park-availability",
+  "name": "carpark-availability",
   "version": "1.0.0",
   "main": "app.ts",
-  "repository": "",
+  "repository": "https://github.com/jayfrey/carpark-availability",
   "author": "Jay Frey <jfrey.k@gmail.com>",
   "license": "MIT",
   "scripts": {

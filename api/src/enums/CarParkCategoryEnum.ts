@@ -1,28 +1,28 @@
-export enum CarParkCategoryEnum {
+export enum CarparkCategoryEnum {
   SMALL,
   MEDIUM,
   BIG,
   LARGE,
 }
 
-export function getCarParkCategoryEnum(totalLots: number) {
+export function getCarparkCategoryEnum(totalLots: number) {
   if (totalLots < 100) {
-    return CarParkCategoryEnum.SMALL;
+    return CarparkCategoryEnum.SMALL;
   } else if (100 <= totalLots && totalLots < 300) {
-    return CarParkCategoryEnum.MEDIUM;
+    return CarparkCategoryEnum.MEDIUM;
   } else if (300 <= totalLots && totalLots < 400) {
-    return CarParkCategoryEnum.BIG;
+    return CarparkCategoryEnum.BIG;
   } else {
-    return CarParkCategoryEnum.LARGE;
+    return CarparkCategoryEnum.LARGE;
   }
 }
 
-export function getCarParkCategoryName(carParkCategory: CarParkCategoryEnum) {
-  if (carParkCategory == CarParkCategoryEnum.SMALL) {
+export function getCarparkCategoryName(carparkCategory: CarparkCategoryEnum) {
+  if (carparkCategory == CarparkCategoryEnum.SMALL) {
     return "small";
-  } else if (carParkCategory == CarParkCategoryEnum.MEDIUM) {
+  } else if (carparkCategory == CarparkCategoryEnum.MEDIUM) {
     return "medium";
-  } else if (carParkCategory == CarParkCategoryEnum.BIG) {
+  } else if (carparkCategory == CarparkCategoryEnum.BIG) {
     return "big";
   } else {
     return "large";

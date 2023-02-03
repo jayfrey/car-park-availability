@@ -1,22 +1,22 @@
-import { ICarPark } from "../interfaces/ICarPark";
-import { CarParkCategoryEnum } from "../enums/CarParkCategoryEnum";
+import { ICarpark } from "../interfaces/ICarpark";
+import { CarparkCategoryEnum } from "../enums/CarparkCategoryEnum";
 
-export class CarPark implements ICarPark {
+export class Carpark implements ICarpark {
   totalLots: number;
   availableLots: number;
-  carParkCategory: CarParkCategoryEnum;
-  carParkNumber: string;
+  carparkCategory: CarparkCategoryEnum;
+  carparkNumber: string;
 
   constructor(
     totalLots: number,
     availableLots: number,
-    carParkCategory: CarParkCategoryEnum,
-    carParkNumber: string
+    carparkCategory: CarparkCategoryEnum,
+    carparkNumber: string
   ) {
     this.totalLots = totalLots;
     this.availableLots = availableLots;
-    this.carParkCategory = carParkCategory;
-    this.carParkNumber = carParkNumber;
+    this.carparkCategory = carparkCategory;
+    this.carparkNumber = carparkNumber;
   }
 
   getTotalLots() {
@@ -27,20 +27,20 @@ export class CarPark implements ICarPark {
     return this.availableLots;
   }
 
-  getCarParkCategory() {
-    return this.carParkCategory;
+  getCarparkCategory() {
+    return this.carparkCategory;
   }
 
-  getCarParkNumber() {
-    return this.carParkNumber;
+  getCarparkNumber() {
+    return this.carparkNumber;
   }
 
   toJSON() {
     return {
       total_lot: this.totalLots,
       lots_available: this.availableLots,
-      car_park_category: this.carParkCategory,
-      car_park_number: this.carParkNumber,
+      carpark_category: this.carparkCategory,
+      carpark_number: this.carparkNumber,
     };
   }
 
