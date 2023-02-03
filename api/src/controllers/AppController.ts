@@ -7,29 +7,37 @@ import { AppService } from "../services/AppService";
 
 export class AppController {
   async getCarParkAvailability(_: any, res: any) {
-    const carParkAvailability: any = await fetchCarParkAvailability();
+    try {
+      const carParkAvailability: any = await fetchCarParkAvailability();
 
-    let carParks: ICarPark[] = [];
+      let carParks: ICarPark[] = [];
 
-    carParkAvailability.data.items[0].carpark_data.map((carPark: any) => {
-      carPark.carpark_info.map((info: any) => {
-        const totalLots = parseInt(info.total_lots);
-        const carParkCategory = getCarParkCategoryEnum(totalLots);
+      carParkAvailability.data.items[0].carpark_data.map((carPark: any) => {
+        carPark.carpark_info.map((info: any) => {
+          const totalLots = parseInt(info.total_lots);
+          const carParkCategory = getCarParkCategoryEnum(totalLots);
 
-        carParks.push(
-          new CarPark(
-            totalLots,
-            info.lots_available,
-            carParkCategory,
-            carPark.carpark_number
-          )
-        );
+          carParks.push(
+            new CarPark(
+              totalLots,
+              info.lots_available,
+              carParkCategory,
+              carPark.carpark_number
+            )
+          );
+        });
       });
-    });
 
-    const appService = new AppService(carParks);
-    const categorisedCarParkAvailability =
-      appService.getCarParkNumbersByLowestAndHighestAvailableLots();
-    res.status(StatusCodes.OK).json(categorisedCarParkAvailability);
+      const appService = new AppService(carParks);
+      const categorisedCarParkAvailability =
+        appService.getCarParkNumbersByLowestAndHighestAvailableLots();
+      res.status(StatusCodes.OK).json(categorisedCarParkAvailability);
+    } catch (err) {
+      console.log(err);
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: "Error while getting car park availability",
+        error: err,
+      });
+    }
   }
 }
