@@ -13,19 +13,24 @@ export class AppController {
       let carparks: ICarpark[] = [];
 
       carparkAvailability.data.items[0].carpark_data.map((carpark: any) => {
-        carpark.carpark_info.map((info: any) => {
-          const totalLots = parseInt(info.total_lots);
-          const carparkCategory = getCarparkCategoryEnum(totalLots);
+        let totalLots: number = 0;
+        let availableLots: number = 0;
 
-          carparks.push(
-            new Carpark(
-              totalLots,
-              info.lots_available,
-              carparkCategory,
-              carpark.carpark_number
-            )
-          );
+        carpark.carpark_info.map((info: any) => {
+          totalLots = totalLots + parseInt(info.total_lots);
+          availableLots = availableLots + parseInt(info.lots_available);
         });
+
+        const carparkCategory = getCarparkCategoryEnum(totalLots);
+
+        carparks.push(
+          new Carpark(
+            totalLots,
+            availableLots,
+            carparkCategory,
+            carpark.carpark_number
+          )
+        );
       });
 
       const appService = new AppService(carparks);
