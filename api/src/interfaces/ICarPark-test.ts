@@ -1,5 +1,5 @@
 import { IOutputter } from "./IOutputter";
-import { CarparkCategoryEnum } from "../enums/CarparkCategoryEnum";
+import { CarparkCategoryEnum } from "../enums/CarParkCategoryEnum-test";
 
 export interface ICarpark extends IOutputter {
   totalLots: number;

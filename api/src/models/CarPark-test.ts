@@ -1,5 +1,5 @@
 import { ICarpark } from "../interfaces/ICarpark";
-import { CarparkCategoryEnum } from "../enums/CarparkCategoryEnum";
+import { CarparkCategoryEnum } from "../enums/CarParkCategoryEnum-test";
 
 export class Carpark implements ICarpark {
   totalLots: number;
