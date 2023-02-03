@@ -1,4 +1,4 @@
-import http from "http";
+const http = require("http");
 
 const options = {
   host: "0.0.0.0",
